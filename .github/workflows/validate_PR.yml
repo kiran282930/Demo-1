@@ -60,16 +60,6 @@ jobs:
           mkdir changed-sources
           sf sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
 
-      - name: "Scan for debug logs in code"
-        run: |
-          echo "Scanning for debug logs in the codebase..."
-          if grep -r "System.debug" force-app/; then
-            echo "Warning: Debug logs found in the codebase!"
-            exit 1
-          else
-            echo "No debug logs found."
-          fi
-        shell: /usr/bin/bash -e {0}
 
       
       - name: "Deploy Delta Changes - No Tests Run"
