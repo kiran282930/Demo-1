@@ -60,7 +60,11 @@ jobs:
           mkdir changed-sources
           sf sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
 
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> e61432a449112db58dbc872c23c441ba8cc727fe
 
       
       - name: "Deploy Delta Changes - No Tests Run"

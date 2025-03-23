@@ -1,5 +1,9 @@
 public class HelloWorld {
     public static void printMessage() {
-        System.debug('Hello, World!');
+       // check commnt
     }
+    public static void printMessage2() {
+        // check commnt
+
+     }
 }
