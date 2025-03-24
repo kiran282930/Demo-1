@@ -1,0 +1,48 @@
+name: Validate Salesforce Org Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-org:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: "Cache Salesforce CLI"
+        id: cache-sfdx
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-sfdx-cli
+        with:
+          path: ~/sf
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/sfdx-project.json') }}
+
+      - name: "Install Salesforce CLI"
+        if: ${{ steps.cache-sfdx.outputs.cache-hit != 'true' }}
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
+          mkdir -p ~/sf
+          tar xJf sf-linux-x64.tar.xz -C ~/sf --strip-components 1
+          echo "$HOME/sf/bin" >> $GITHUB_PATH
+          ~/sf/bin/sf version
+
+      - name: "Update Salesforce CLI"
+        if: ${{ steps.cache-sfdx.outputs.cache-hit == 'true' }}
+        run: |
+          echo "$HOME/sf/bin" >> $GITHUB_PATH
+          ~/sf/bin/sf version
+
+      - name: "Authenticate to Org"
+        run: |
+          echo ${{ secrets.DEV_ORG1 }} > ./SFDX_AUTH_FILE.txt
+          sf org login sfdx-url -f ./SFDX_AUTH_FILE.txt -s -a integration
+
+      - name: "Validate Deployment to Salesforce Org"
+        run: |
+          sf project deploy start --check-only --test-level NoTestRun --json --source-dir force-app/
