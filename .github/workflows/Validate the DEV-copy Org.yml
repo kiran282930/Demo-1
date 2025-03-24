@@ -1,9 +1,9 @@
-name: Validate Salesforce Org Deployment
+name: Validate DEV-COPY ORG
 
 on:
   workflow_run:
     workflows:
-      - Deploy to Sandbox branch
+      - Deploy to DEV-COPY ORG
     types:
       - completed
   #push:

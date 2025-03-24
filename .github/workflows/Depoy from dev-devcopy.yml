@@ -1,9 +1,9 @@
-name: Deploy to Production Org
+name: Deploy to DEV Org
 
 on:
   workflow_run:
     workflows:
-      - Validate Salesforce Org Deployment
+      - Validate DEV-COPY ORG
     types:
       - completed
     paths:

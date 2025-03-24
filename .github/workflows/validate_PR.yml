@@ -1,4 +1,4 @@
-name: Validate to main branch
+name: Validate to DEV branch
 
 on:
   pull_request:
