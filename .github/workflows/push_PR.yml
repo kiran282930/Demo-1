@@ -1,5 +1,5 @@
 # Unique name for this workflow
-name: Deploy to Sandbox branch
+name: Deploy to DEV-COPY ORG
 
 # Definition when the workflow should run
 on:
