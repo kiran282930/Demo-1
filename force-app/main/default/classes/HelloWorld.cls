@@ -6,8 +6,8 @@ public class HelloWorld {
         // check commnt
 
      }
-     public static void printMessage2() {
+     public static void printMessage3() {
         // check commnt
-       // System.debug("HI, This is push 1 on 24-03-25");//hii Helloo
+       // System.debug("HI, This is push 1 on 24-03-25");
      }
 }
