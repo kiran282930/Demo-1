@@ -1,9 +1,14 @@
 name: Validate Salesforce Org Deployment
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows:
+      - Validate Salesforce Org Deployment
+    types:
+      - completed
+  #push:
+    #branches:
+     # - main
 
 jobs:
   validate-org:
