@@ -6,4 +6,8 @@ public class HelloWorld {
          System.debug('Hello, World!');
        
    }
+   public static void greeting3() {
+      System.debug('Hello, World!');
+    
+}
 }
