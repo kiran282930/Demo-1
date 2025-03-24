@@ -3,7 +3,7 @@ name: Validate Salesforce Org Deployment
 on:
   workflow_run:
     workflows:
-      - Validate Salesforce Org Deployment
+      - Deploy to Sandbox branch
     types:
       - completed
   #push:
