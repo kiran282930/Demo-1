@@ -10,4 +10,8 @@ public class HelloWorld {
       System.debug('Hello, World!');
     
 }
+   public static void greeting4() {
+      System.debug('Hello, World!');
+ 
+}
 }
