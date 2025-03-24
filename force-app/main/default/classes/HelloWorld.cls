@@ -14,4 +14,8 @@ public class HelloWorld {
       System.debug('Hello, World! - 1');
  
 }
+   public static void greeting5() {
+      System.debug('Hello, World! - 2');
+
+}
 }
