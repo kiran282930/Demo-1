@@ -18,8 +18,4 @@ public class HelloWorld {
       System.debug('Hello, World! - 2');
 
 }
-   public static void greeting6() {
-      System.debug('Hello, World! - 2');
-
-}
 }
