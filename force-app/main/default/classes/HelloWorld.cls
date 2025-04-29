@@ -20,7 +20,9 @@ public class HelloWorld {
 
 
 }  public static void greeting6() {
+
       System.debug('Hello, World! - 9-4-2025');//hello world 2
+
 
 }}
 
