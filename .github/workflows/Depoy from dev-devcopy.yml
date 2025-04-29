@@ -1,4 +1,4 @@
-name: Deploy to DEV Org
+name: Deploy to DEV ORG
 
 on:
   workflow_run:

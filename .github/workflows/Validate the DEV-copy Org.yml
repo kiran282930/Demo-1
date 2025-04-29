@@ -1,4 +1,4 @@
-name: Validate DEV-COPY ORG
+name: Validate DEV-COPY Org
 
 on:
   workflow_run:
