@@ -3,7 +3,7 @@ name: Validate DEV-COPY org
 on:
   workflow_run:
     workflows:
-      - Deploy to DEV-COPY ORG
+      - Deploy to Sandbox branch
     types:
       - completed
   #push:
