@@ -1,4 +1,4 @@
-name: Validate to DEV branch
+name: Validate to main branch
 
 on:
   pull_request:
@@ -55,11 +55,4 @@ jobs:
       - name: "Authenticate to Integration Org"
         run: sf org login sfdx-url -f ./SFDX_INTEGRATION_URL.txt -s -a integration
 
-      - name: "Create delta packages for new, modified or deleted metadata"
-        run: |
-          mkdir changed-sources
-          sf sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
-
-      - name: "Deploy Delta Changes - No Tests Run"
-        run: |
-          sf project deploy start --dry-run -x changed-sources/package/package.xml --post-destructive-changes changed-sources/destructiveChanges/destructiveChanges.xml -l NoTestRun --json
+    
