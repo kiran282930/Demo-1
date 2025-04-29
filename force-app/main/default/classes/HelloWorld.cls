@@ -18,7 +18,12 @@ public class HelloWorld {
       System.debug('Hello, World! - 2');
 
 }  public static void greeting6() {
+<<<<<<< HEAD
       System.debug('Hello, World! - 9-4-2025');//helloo
 
+=======
+      System.debug('Hello, World! - 9-4-2025');//hello
+     
+>>>>>>> 652f45cea196c9b8345c60a03483cc143dd959ab
 }
 }
