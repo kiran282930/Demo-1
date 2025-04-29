@@ -1,13 +1,12 @@
-# Unique name for this workflow
-name: Deploy to DEV-COPY ORG
+name: Deploy to DEV Org
 
-# Definition when the workflow should run
 on:
-    # The workflow will run whenever an event happens on a pull request
-    pull_request:
-        types: [closed]
-        branches: [ main ]
-        paths:
+  workflow_run:
+    workflows:
+      - Validate DEV-COPY ORG
+    types:
+      - completed
+    paths:
             - "force-app/**"
 
 # Jobs to be executed when the above conditions are met
@@ -57,7 +56,7 @@ jobs:
             
             - name: "Populate auth file with SFDX_URL secret of integration org"
               run: |
-                  echo ${{ secrets.DEV_ORG1}} > ./SFDX_INTEGRATION_URL.txt
+                  echo ${{ secrets.DEV_ORG2}} > ./SFDX_INTEGRATION_URL.txt
 
             # Authenticate to org using the URL stored in the text file
             - name: "Authenticate to Integration Org"
@@ -75,5 +74,3 @@ jobs:
             - name: "Deploy Delta Changes - Dry Run - No Tests Run"
               run: |
                   sf project deploy start -x changed-sources/package/package.xml --post-destructive-changes changed-sources/destructiveChanges/destructiveChanges.xml -l NoTestRun --json
-
-            
