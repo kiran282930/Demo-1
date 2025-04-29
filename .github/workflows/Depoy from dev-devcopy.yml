@@ -9,7 +9,7 @@ on:
     paths:
             - "force-app/**"
 
-# Jobs to be executed when the above conditions are met
+# Jobs to be executed when the above conditions are mett
 jobs:
     # This is the name of the job. You can give it whatever name you want
     deployment-on-develop-org:
