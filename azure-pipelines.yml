@@ -1,0 +1,45 @@
+name: Deploy to Dev Sandbox
+
+trigger:
+  branches:
+    include:
+      - Dev  # Trigger on merges to the Dev branch
+
+variables:
+  - group: sf-credentials
+
+steps:
+  - checkout: self
+    fetchDepth: 0
+
+  - task: UseNode@1
+    inputs:
+      version: '18.x'
+
+  - script: |
+      npm install --global @salesforce/cli
+    displayName: Install Salesforce CLI (new)
+
+  - task: DownloadSecureFile@1
+    name: opensslCertificate
+    displayName: 'Download OpenSSL Certificate'
+    inputs:
+      secureFile: 'server.key'
+
+  - bash: sf org login jwt --username $(userName) --jwt-key-file $(opensslCertificate.secureFilePath) --client-id $(clientId) --instance-url $(instanceUrl)
+    displayName: Authorize Salesforce Org
+
+  - bash: echo y | sf plugins:install sfdx-git-delta
+    displayName: Installing sfdx-git-delta plugin
+
+  - bash: sf sgd:source:delta -f HEAD^ --output . -i .gitignore
+    displayName: Checking for delta changes.
+
+  - bash: cat package/package.xml
+    displayName: Showing the generated delta of package.xml
+
+  - bash: cat destructiveChanges/destructiveChanges.xml
+    displayName: Showing destructiveChanges.xml
+
+  - bash: sf project deploy start --ignore-warnings --manifest package/package.xml --test-level RunLocalTests --target-org $(userName) --post-destructive-changes destructiveChanges/destructiveChanges.xml --wait 40
+    displayName: Deploying validated changes to the Salesforce Org
