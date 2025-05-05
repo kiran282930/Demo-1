@@ -1,8 +1,8 @@
 name: Deploy to DEV ORG
 
 on:
-  workflow_run:
-    workflows:
+  #workflow_run:
+    #workflows:
       - Validate DEV-COPY org
     types:
       - completed
