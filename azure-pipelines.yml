@@ -3,7 +3,7 @@ name: Deploy to Dev Sandbox
 trigger:
   branches:
     include:
-      - Dev  # Trigger on merges to the Dev branch
+      - main  # Trigger on merges to the Dev branch
 
 variables:
   - group: sf-credentials
