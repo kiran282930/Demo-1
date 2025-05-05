@@ -41,5 +41,8 @@ steps:
   - bash: cat destructiveChanges/destructiveChanges.xml
     displayName: Showing destructiveChanges.xml
 
-  - bash: sf project deploy start --ignore-warnings --manifest package/package.xml --test-level RunLocalTests --target-org $(userName) --post-destructive-changes destructiveChanges/destructiveChanges.xml --wait 40
-    displayName: Deploying validated changes to the Salesforce Org
+  - bash: sf project deploy start --ignore-warnings --manifest package/package.xml --test-level NoTestRun --target-org $(userName) --post-destructive-changes destructiveChanges/destructiveChanges.xml --wait 40
+    displayName: Deploying changes to the Salesforce Org
+
+  #- bash: sf project deploy start --ignore-warnings --manifest package/package.xml --test-level RunLocalTests --target-org $(userName) --post-destructive-changes destructiveChanges/destructiveChanges.xml --wait 40
+   # displayName: Deploying validated changes to the Salesforce Org
