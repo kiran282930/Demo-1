@@ -1,15 +1,15 @@
 name: Validate DEV-COPY org
 
 on:
-  workflow_run:
-    workflows:
-      - Deploy to Sandbox branch
-    types:
-      - completed
-  #push:
-    #branches:
-     # - main
-
+  push:
+    branches:
+      - main
+  #workflow_run:
+    #workflows:
+      #- Deploy to Sandbox branch
+    #types:
+      #- completed
+    
 jobs:
   validate-org:
     runs-on: ubuntu-latest
