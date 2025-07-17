@@ -1,0 +1,197 @@
+Here is a complete step-by-step implementation to create a data table with expandable rows in Salesforce LWC, where the expanded content dynamically loads record details from Apex.
+
+We will:
+
+1. Create an Apex class to fetch record data.
+
+
+2. Build a child LWC (generalInformation) that receives a recordId and calls the Apex method.
+
+
+3. Build a parent LWC (dataTableWithDropdown) to show the table and toggle the dropdown.
+
+
+
+
+---
+
+🧩 Step-by-Step Implementation
+
+
+---
+
+✅ Step 1: Apex Controller to Fetch Record
+
+Create the following Apex class in Salesforce:
+
+public with sharing class GeneralInfoController {
+    @AuraEnabled(cacheable=true)
+    public static Account getRecordInfo(Id recordId) {
+        return [SELECT Id, Name, Phone, Website FROM Account WHERE Id = :recordId LIMIT 1];
+    }
+}
+
+> 🔄 You can change Account to any object (like Lead, Opportunity, etc.)
+
+
+
+
+---
+
+✅ Step 2: Create the Child LWC: generalInformation
+
+➤ generalInformation.html
+
+<template>
+  <template if:true={recordData}>
+    <div class="slds-box slds-theme_shade slds-p-around_medium">
+      <p class="slds-text-heading_small">General Information</p>
+      <p><strong>Name:</strong> {recordData.Name}</p>
+      <p><strong>Phone:</strong> {recordData.Phone}</p>
+      <p><strong>Website:</strong> {recordData.Website}</p>
+    </div>
+  </template>
+
+  <template if:true={error}>
+    <div class="slds-text-color_error">Error: {error.body.message}</div>
+  </template>
+</template>
+
+➤ generalInformation.js
+
+import { LightningElement, api, wire } from 'lwc';
+import getRecordInfo from '@salesforce/apex/GeneralInfoController.getRecordInfo';
+
+export default class GeneralInformation extends LightningElement {
+  @api recordId;
+  recordData;
+  error;
+
+  @wire(getRecordInfo, { recordId: '$recordId' })
+  wiredRecord({ data, error }) {
+    if (data) {
+      this.recordData = data;
+      this.error = null;
+    } else if (error) {
+      this.error = error;
+      this.recordData = null;
+    }
+  }
+}
+
+
+---
+
+✅ Step 3: Create the Parent LWC: dataTableWithDropdown
+
+➤ dataTableWithDropdown.html
+
+<template>
+  <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <template for:each={records} for:item="record">
+        <tr key={record.id}>
+          <td>
+            <lightning-button-icon
+              icon-name={record.id === expandedId ? 'utility:chevrondown' : 'utility:chevronright'}
+              alternative-text="Toggle"
+              onclick={handleToggle}
+              data-id={record.id}>
+            </lightning-button-icon>
+          </td>
+          <td>{record.name}</td>
+        </tr>
+
+        <template if:true={record.showDetails}>
+          <tr key={record.id + '-details'}>
+            <td colspan="2">
+              <c-general-information record-id={record.id}></c-general-information>
+            </td>
+          </tr>
+        </template>
+      </template>
+    </tbody>
+  </table>
+</template>
+
+
+---
+
+➤ dataTableWithDropdown.js
+
+import { LightningElement, track } from 'lwc';
+
+export default class DataTableWithDropdown extends LightningElement {
+  @track records = [
+    { id: '001XXXXXXXXXXXXAAA', name: 'Acme Corp', showDetails: false },
+    { id: '001XXXXXXXXXXXXAAB', name: 'Global Tech', showDetails: false }
+  ];
+
+  expandedId;
+
+  handleToggle(event) {
+    const clickedId = event.currentTarget.dataset.id;
+
+    this.records = this.records.map(record => ({
+      ...record,
+      showDetails: record.id === clickedId ? !record.showDetails : false
+    }));
+
+    this.expandedId = this.records.find(r => r.showDetails)?.id || null;
+  }
+}
+
+> 🧠 Note: Replace the id values with real Account record Ids from your org.
+
+
+
+
+---
+
+(Optional) ➤ dataTableWithDropdown.css
+
+/* Optional styles for better spacing or coloring */
+
+
+---
+
+✅ Step 4: Deploy & Test
+
+1. Push both components to your org.
+
+
+2. Add <c-data-table-with-dropdown></c-data-table-with-dropdown> to a Lightning App Page.
+
+
+3. Ensure the records exist (Accounts with matching IDs).
+
+
+4. Click the ➕ icon to expand — the child component will show real-time record data.
+
+
+
+
+---
+
+🧠 Bonus: Real-Time Record Lookup from Apex
+
+You can enhance this with:
+
+getRecords() from Apex instead of hardcoded data.
+
+@wire(getRecords) in the parent component.
+
+Support for dynamic row expansion via onrowaction (if using lightning-datatable).
+
+
+
+---
+
+Would you like me to show that as well — loading the rows from Apex dynamically instead of hardcoded records?
+
